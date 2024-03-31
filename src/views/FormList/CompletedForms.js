@@ -12,6 +12,7 @@ const FormList = () => {
   const [handleSnackbarOpen] = useOutletContext();
   const [open, setOpen] = useState(false);
   const [Forms, setForms] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -38,6 +39,12 @@ const FormList = () => {
   useEffect(() => {
     FormsGetAllResponses(setForms, handleSnackbarOpen)
   }, [])
+
+  // Filtered forms based on the search input value
+  const filteredForms = Forms?.filter(form =>
+    form.form.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
   return (
     <>
       <PageHeader label='eCRF' />
@@ -56,13 +63,15 @@ const FormList = () => {
                 </InputAdornment>
               ),
             }}
+            // Update search value on change
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
-
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <Table
             showCheckBox={false}
-            data={Forms || []}
+            data={filteredForms || []}
             tableHeader={columns || []}
             onView={handleView}
             ViewTooltip='View Response'
