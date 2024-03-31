@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, InputAdornment, Paper, Typography } from "@mui/material";
+import { Box, InputAdornment } from "@mui/material";
 import { CustomButton, CustomModal, InputField, PageContainer, PageHeader, Table } from "../../components/index";
 import { Search } from "@mui/icons-material";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import NewFormModal from "./NewFormModal";
 import * as Yup from 'yup';
-import { CreateForm } from "../Apis";
-import { FormsGetAll } from "../Apis";
+import { CreateForm, FormDeleteByID, FormsGetAll } from "../Apis";
+
 const FormList = () => {
   const navigate = useNavigate()
   const [handleSnackbarOpen] = useOutletContext();
@@ -34,8 +34,19 @@ const FormList = () => {
     navigate(`/form-builder/${id}`)
     handleClose()
   }
-  const handleOpenForm = (row) =>{
+  const handleOpenForm = (row) => {
     navigate(`/form-builder/${row.id}`)
+  }
+  const handleDeleteForm = async (row) => {
+    try {
+      await FormDeleteByID(row.id, handleSnackbarOpen)
+      FormsGetAll(setForms, handleSnackbarOpen)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const handleView = (row,index) =>{
+    console.log(row,index);
   }
   useEffect(() => {
     FormsGetAll(setForms, handleSnackbarOpen)
@@ -59,7 +70,10 @@ const FormList = () => {
               ),
             }}
           />
-          <CustomButton backgroundColor="#0E6ACE" sx={{ color: 'white' }} onClick={handleOpen}> New Form</CustomButton>
+         <Box>
+         <CustomButton backgroundColor="#0E6ACE" sx={{ color: 'white' }} onClick={handleOpen}> New Form</CustomButton>
+         </Box>
+
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <Table
@@ -67,6 +81,11 @@ const FormList = () => {
             data={Forms.map((item) => ({ ...item, fields: item.form_fields.length, enableAsSurvey: 'Yes' })) || []}
             tableHeader={columns || []}
             handleOpen={handleOpenForm}
+            showDeleteButton
+            showUpdateButton
+            onUpdate={handleOpenForm}
+            onDelete={handleDeleteForm}
+            onView={handleView}
           />
         </Box>
         <CustomModal open={open} onClose={handleClose} width='50%' maxHeight="100%">
@@ -82,7 +101,6 @@ export default FormList;
 const columns = [
   { field: 'id', headerName: 'Forms', width: 100 },
   { field: 'title', headerName: 'Title', width: 200 },
-  { field: 'fields', headerName: 'Sections/Fields', width: 200 },
-  { field: 'enableAsSurvey', headerName: 'Enable As survey', width: 150 ,type:'button'},
-  { field: 'formActions', headerName: 'Form Actions', width: 200 ,type:'input'},
+  { field: 'fields', headerName: 'Sections / Fields', width: 200 },
+  { field: 'enableAsSurvey', headerName: 'Enable As survey', width: 150, type: 'button' },
 ];

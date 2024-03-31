@@ -15,7 +15,8 @@ import {
   Box,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { AddBox, Delete, Edit, Download, Info } from "@mui/icons-material";
+import { AddBox, Download, Info } from "@mui/icons-material";
+import { Edit, PinIcon, BoxIcon, Delete } from '../../assets/icons/svgicons';
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import { InputField, SelectBox } from "../InputFields/CustomInput";
@@ -162,7 +163,7 @@ const CustomTable = ({
                   {column.headerName}
                 </CustomTableCell>
               ))}
-              {!action && <CustomTableCell></CustomTableCell>}
+              {!action && <CustomTableCell width={200} sx={{ color: 'white' }}>Actions</CustomTableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -194,8 +195,17 @@ const CustomTable = ({
                   <Stack
                     direction="row"
                     alignItems="center"
-                    justifyContent="flex-end"
                   >
+                    {onView && (
+                      <Tooltip title={ViewTooltip || "Start Response"}>
+                        <IconButton
+                          size="small"
+                          onClick={() => onView(row, index)}
+                        >
+                          <PinIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                     {showAddButton && (
                       <Tooltip title={addTooltip || "Add"}>
                         <IconButton size="small" onClick={() => onAdd(row, index)}>
@@ -233,16 +243,7 @@ const CustomTable = ({
                         </IconButton>
                       </Tooltip>
                     )}
-                    {onView && (
-                      <Tooltip title={ViewTooltip || "View Detail"}>
-                        <IconButton
-                          size="small"
-                          onClick={() => onView(row, index)}
-                        >
-                          <Info fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    )}
+
                   </Stack>
                 </CustomTableCell>}
               </TableRow>

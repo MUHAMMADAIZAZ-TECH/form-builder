@@ -6,21 +6,8 @@ import { Formik, Form, Field, useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useOutletContext } from 'react-router-dom';
 
-const initialValues = {
-    type: '',
-    label: '',
-    variableName: '',
-    required: false,
-    identifier: false,
-    toolTip: '',
-    helperText: '',
-    placeholderText: '',
-    customAlignment: '',
-    options: [],
-    chooseDateFormat: '',
-};
 
-const FormModal = ({ formId, position, CreateFields }) => {
+const FormModal = ({ formId, position, CreateFields, formik, label }) => {
 
     const [Tab, setTab] = useState(null);
     const [handleSnackbarOpen] = useOutletContext();
@@ -28,38 +15,8 @@ const FormModal = ({ formId, position, CreateFields }) => {
     const handleTab = (tab) => {
         setTab(tab);
     };
-    const validationSchema = Yup.object().shape({
-        type: Yup.string().required('Field Type is required'),
-        label: Yup.string().required('Field Label is required'),
-        variableName: Yup.string(),
-        required: Yup.string(),
-        helperText: Yup.string(),
-        placeholderText: Yup.string(),
-        customAlignment: Yup.string(),
-        optionsText: Yup.string(),
-        chooseDateFormat: Yup.string(),
-    });
-    const formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit: (values) => {
-            const Body = {
-                "label": values.label,
-                "type": values.type,
-                "position": position,
-                "required": values.required,
-                "dependent_on_fields": [],
-                "options": values.options,
-                "condition": "",
-                "condition_value": "",
-                "form": formId
-            }
-            console.log(values);
-            CreateFields(Body)
-        },
-    });
+
     const { values, setValues, touched, errors, handleBlur, handleChange } = formik;
-    console.log(values);
     const handleClose = (opindex) => {
         const UpdatedOptions = [...values.options].filter((_, index) => index !== opindex)
         setValues((prev) => ({
@@ -72,34 +29,36 @@ const FormModal = ({ formId, position, CreateFields }) => {
         <Box p={3}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Typography>Add a Field</Typography>
+                    <Typography>{label}</Typography>
                 </Grid>
-                <Grid item xs={4.4}>
-                    <Box display='flex' justifyContent='space-between'>
-                        <CustomButton
-                            backgroundColor={Tab === null ? '#0E6ACE' : '#F1F5F9'}
-                            sx={{ color: Tab === null ? 'white' : '#94A3B8' }}
-                            onClick={() => handleTab(null)}
-                        >
-                            General
-                        </CustomButton>
-                        <CustomButton
-                            backgroundColor={Tab === 1 ? '#0E6ACE' : '#F1F5F9'}
-                            sx={{ color: Tab === 1 ? 'white' : '#94A3B8' }}
-                            onClick={() => handleTab(1)}
-                        >
-                            Advance
-                        </CustomButton>
-                        <CustomButton
-                            backgroundColor={Tab === 2 ? '#0E6ACE' : '#F1F5F9'}
-                            sx={{ color: Tab === 2 ? 'white' : '#94A3B8' }}
-                            onClick={() => handleTab(2)}
-                        >
-                            Validation
-                        </CustomButton>
-                    </Box>
+                <Grid item xs={1.5}> <CustomButton
+                    backgroundColor={Tab === null ? '#0E6ACE' : '#F1F5F9'}
+                    sx={{ color: Tab === null ? 'white' : '#94A3B8' }}
+                    onClick={() => handleTab(null)}
+                >
+                    General
+                </CustomButton>
                 </Grid>
-                <Grid item xs={7.6} />
+                <Grid item xs={1.5}>
+                    <CustomButton
+                        backgroundColor={Tab === 1 ? '#0E6ACE' : '#F1F5F9'}
+                        sx={{ color: Tab === 1 ? 'white' : '#94A3B8' }}
+                        onClick={() => handleTab(1)}
+                    >
+                        Advance
+                    </CustomButton>
+                </Grid>
+                <Grid item xs={1.5}>
+                    <CustomButton
+                        backgroundColor={Tab === 2 ? '#0E6ACE' : '#F1F5F9'}
+                        sx={{ color: Tab === 2 ? 'white' : '#94A3B8' }}
+                        onClick={() => handleTab(2)}
+                    >
+                        Validation
+                    </CustomButton>
+                </Grid>
+
+                <Grid item xs={9} />
                 {Tab === null && (
                     <>
                         <Grid item xs={12}>

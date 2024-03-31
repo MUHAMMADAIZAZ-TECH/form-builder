@@ -62,6 +62,15 @@ class DataService {
       headers: { ...authHeader() },
     });
   }
+  
+  static patch(path = '', data = {}) {
+    return client({
+      method: 'PATCH',
+      url: path,
+      data,
+      headers: { ...authHeader() },
+    });
+  }
 }
 
 client.interceptors.request.use(
