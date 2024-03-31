@@ -60,9 +60,9 @@ const FormList = () => {
   }, [])
   
   // Filtered forms based on the search input value
-  const filteredForms = Forms?.filter(form =>
+  const filteredForms = Array.isArray(Forms) ? Forms.filter(form =>
     form.title.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  ) : [];
 
   return (
     <>

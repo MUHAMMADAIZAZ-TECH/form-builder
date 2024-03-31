@@ -35,15 +35,15 @@ const FormList = () => {
   const handleView = (row) => {
     navigate(`/form-builder/submited-response/${row.id}/form/${row.form}`)
   }
- 
+
   useEffect(() => {
     FormsGetAllResponses(setForms, handleSnackbarOpen)
   }, [])
 
   // Filtered forms based on the search input value
-  const filteredForms = Forms?.filter(form =>
+  const filteredForms = Array.isArray(Forms) ? Forms.filter(form =>
     form.form.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  ) : [];
 
   return (
     <>
