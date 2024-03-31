@@ -125,7 +125,8 @@ const FormBuilder = ({ Response }) => {
         responseID && getResponse()
     }, [id, responseID])
 
-    const IsCompleted = form?.form_fields?.length === response?.values?.length;
+    const IsCompleted = form?.form_fields?.length > 0 && response?.values?.length &&
+        form?.form_fields?.length === response?.values?.length;
 
     useEffect(() => {
         if (response?.values[currentIndex]) {
