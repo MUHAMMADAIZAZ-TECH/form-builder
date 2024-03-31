@@ -18,7 +18,7 @@ import { styled } from "@mui/system";
 import { AddBox, Delete, Edit, Download, Info } from "@mui/icons-material";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import { InputField } from "../InputFields/CustomInput";
+import { InputField, SelectBox } from "../InputFields/CustomInput";
 import { CustomButton } from "../Buttons/Buttons";
 
 const CustomTableCell = styled(TableCell)({
@@ -64,7 +64,8 @@ const CustomTable = ({
   maxHeight,
   minHeight,
   setDisable,
-  action
+  action,
+  handleOpen
 }) => {
   const [tableData, setTableData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -135,20 +136,20 @@ const CustomTable = ({
     <Paper>
       {toolbar && (
         <CustomToolbar>
-        <Box width='100%' display='flex' justifyContent='space-between'>
-        {searchinput && (
-            <InputField
-              label="Search"
-              size="small"
-              variant="outlined"
-              value={filterValue}
-              onChange={handleFilterChange}
-              sx={{ '& input': { padding: '6px 10px', lineHeight: 1 } }}
-              InputLabelProps={{ sx: { lineHeight: '1' } }}
-            />
-          )}
-           <CustomButton backgroundColor="#0E6ACE" sx={{color:'white'}}> New Form</CustomButton>
-        </Box>
+          <Box width='100%' display='flex' justifyContent='space-between'>
+            {searchinput && (
+              <InputField
+                label="Search"
+                size="small"
+                variant="outlined"
+                value={filterValue}
+                onChange={handleFilterChange}
+                sx={{ '& input': { padding: '6px 10px', lineHeight: 1 } }}
+                InputLabelProps={{ sx: { lineHeight: '1' } }}
+              />
+            )}
+            <CustomButton backgroundColor="#0E6ACE" sx={{ color: 'white' }}> New Form</CustomButton>
+          </Box>
         </CustomToolbar>
       )}
       <TableContainer sx={{ width: "100%", maxHeight, minHeight, borderRadius: 1.5 }}>
@@ -166,35 +167,24 @@ const CustomTable = ({
           </TableHead>
           <TableBody>
             {Data.map((row, index) => (
-              <TableRow key={index} sx={{ backgroundColor: '#F1F5F9' }}>
-                {showCheckBox && (
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      checked={row === selectedRow}
-                      onChange={() => {
-                        onSelectTableCell(row);
-                      }}
-                    />
-                  </TableCell>
-                )}
+              <TableRow key={index} sx={{ backgroundColor: '#F1F5F9' }} >
                 {tableHeader.map((column) => (
-                  <CustomTableCell key={column.field} component="th" scope="row">
+                  <CustomTableCell key={column.field} component="th" scope="row" onClick={() => handleOpen(row)}>
                     {column.type === "input" ? (
-                      <InputField
+                      <SelectBox
                         name={column.field}
                         value={row[column.field]}
-                        label={column.headerName}
+                        options={[]}
+                        sx={{ width: '100%' }}
                         onChange={(e) => handleChange(e, index)}
                         fullWidth
                       />
-                    ) : column.type === "checkbox" ? (
-                      <Checkbox
-                        sx={{ padding: '2px' }}
-                        checked={row[column.field]}
-                        name={column.field}
-                        onChange={(e) => handleChangeCheckbox(e, index)}
-                      />
+                    ) : column.type === "button" ? (
+                      <CustomButton
+                        sx={{ border: '2px solid #F59E0B', color: 'black' }}
+                        backgroundColor='#FEF3C7'
+                      >{row[column.field]}
+                      </CustomButton>
                     ) : (
                       row[column.field]
                     )}

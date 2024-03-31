@@ -1,16 +1,16 @@
 import React from "react";
 import {
-  InputLabel, FormControl,
-  MenuItem, Select, FormHelperText, TextField, FormControlLabel, styled, Switch,
+  InputLabel, Checkbox,
+  MenuItem, Select, FormHelperText, TextField, FormControlLabel, styled, Switch, Radio,
 } from "@mui/material";
-import { CheckBox } from "@mui/icons-material";
-
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateTime } from "luxon";
 const SelectBox = ({
   label,
   options,
   helperText,
   value,
-  handleChange,
+  onChange,
   error,
   sx,
   size = "small",
@@ -25,8 +25,8 @@ const SelectBox = ({
       <Select
         value={value}
         name={name}
-        onChange={handleChange}
-        sx={{ borderRadius: 2, }}
+        onChange={onChange}
+        sx={{ borderRadius: 2, bgcolor: 'white', ...sx, minWidth: '40%' }}
         error={error && error}
         required={required}
         size={size}
@@ -67,7 +67,9 @@ const InputField = ({
   type,
   InputProps,
   inputProps,
-  InputLabelProps
+  InputLabelProps,
+  placeholder,
+  onKeyPress
 }) => {
   return (
     <>
@@ -88,11 +90,13 @@ const InputField = ({
         variant={variant || 'outlined'}
         error={error || false}
         required={required || false}
-        sx={sx}
+        sx={{ minWidth: '40%', ...sx }}
+        placeholder={placeholder}
         InputProps={{
           style: { borderRadius: 10, backgroundColor: 'white', ...InputProps?.style }, // Applying border radius to input
           ...InputProps // Spread any additional props passed to InputProps
         }}
+        onKeyPress={onKeyPress}
         inputProps={inputProps}
         InputLabelProps={InputLabelProps}
       /></>
@@ -148,16 +152,35 @@ const IOSSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
+const CustomCheckbox = ({ label, checked, onChange }) => {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      {label && <InputLabel sx={{ color: "#0F172A", fontSize: 13, fontWeight: 600, lineHeight: 2.5 }}>{label}</InputLabel>}
+      <Checkbox checked={checked} onChange={onChange} />
+    </div>
+  );
+};
+
+const CustomRadioButton = ({ label, value, checked, onChange }) => {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      {label && <InputLabel sx={{ color: "#0F172A", fontSize: 13, fontWeight: 600, lineHeight: 2.5 }}>{label}</InputLabel>}
+      <Radio checked={checked} onChange={onChange} value={value} />
+    </div>
+  );
+};
 const CustomSwitch = ({
   checked,
   onChange,
   label,
   disabled,
+  name
 }) => {
   return (
     <>
       {label && <InputLabel sx={{ color: "#0F172A", fontSize: 13, fontWeight: 600, lineHeight: 2.5 }}>{label}</InputLabel>}
       <IOSSwitch
+        name={name}
         checked={checked}
         onChange={onChange}
         disabled={disabled}
@@ -166,8 +189,57 @@ const CustomSwitch = ({
   );
 };
 
+const CustomDatePicker = ({
+  name,
+  label,
+  value,
+  onChange,
+  error,
+  required,
+  size = 'small',
+  helperText,
+  width,
+  disabled,
+  disableFuture, // new prop to disable future dates
+  disablePast,   // new prop to disable past dates
+}) => {
+  const currentDate = DateTime.fromJSDate(new Date());
+
+  return (
+    <DatePicker
+      sx={{ width, backgroundColor: 'white', minWidth: '40%' }}
+      disabled={disabled}
+      label={label}
+      value={value ? DateTime.fromISO(value) : null}
+      onChange={(newValue) =>
+        onChange({
+          target: {
+            name,
+            value: newValue ? DateTime.fromISO(newValue).toISODate() : '',
+          },
+        })
+      }
+      required={required}
+      maxDate={disableFuture ? currentDate : undefined} // set maxDate if disableFuture is true
+      minDate={disablePast ? currentDate : undefined}  // set minDate if disablePast is true
+      slotProps={{
+        textField: {
+          helperText: error ? helperText : false,
+          error,
+          size,
+          name,
+          required,
+        },
+      }}
+
+    />
+  );
+};
 export {
   SelectBox,
   InputField,
-  CustomSwitch
+  CustomSwitch,
+  CustomDatePicker,
+  CustomRadioButton,
+  CustomCheckbox
 };

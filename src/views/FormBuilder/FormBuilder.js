@@ -1,21 +1,43 @@
-import React, { useState } from 'react'
-import { CustomButton, CustomCheckbox, CustomModal, CustomSwitch, IOSSwitch, InputField, PageContainer, PageHeader, SelectBox } from '../../components'
-import { Box, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+import { CustomButton, CustomModal, PageContainer, PageHeader } from '../../components'
+import { Box, Grid } from '@mui/material';
 import { Edit, PinIcon, BoxIcon, Delete } from '../../assets/icons/svgicons';
 import FormFieldItem from './FormFieldItem';
 import FormModal from './FormModal';
+import { useOutletContext, useParams ,useNavigate} from 'react-router-dom';
+import { CreateFields, FormGetByID } from '../Apis';
 
 const FormBuilder = () => {
+    const { id } = useParams()
+    const navigate = useNavigate()
+    const [handleSnackbarOpen] = useOutletContext();
     const [open, setOpen] = useState(false);
+    const [form, setForm] = useState(false);
     const handleClose = () => {
         setOpen(false)
     }
     const handleOpen = () => {
         setOpen(true)
     }
+    const handleCreateField = (body) => {
+        CreateFields(body, handleSnackbarOpen, ReloadOnAdd)
+    }
+    const FetchForm = () => {
+        FormGetByID(id, setForm, handleSnackbarOpen)
+    }
+    const ReloadOnAdd = () => {
+        FetchForm()
+        handleClose()
+    }
+    const handleSave = () =>{
+        navigate('/')
+    }
+    useEffect(() => {
+        FormGetByID(id, setForm, handleSnackbarOpen)
+    }, [id])
     return (
         <>
-            <PageHeader label='eCRF' />
+            <PageHeader label={form?.title} />
             <PageContainer maxWidth="xl">
                 <Box
                     sx={{
@@ -33,9 +55,15 @@ const FormBuilder = () => {
                         <Edit />
                     </Box>
                     <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <FormFieldItem />
-                        </Grid>
+
+                        {form?.form_fields?.length > 0 && (
+                            form.form_fields?.map((field) => (
+                                <Grid item xs={12} key={field.label}>
+                                    <FormFieldItem field={field} />
+                                </Grid>
+                            ))
+                        )}
+
                         <Grid item xs={12}>
                             <CustomButton
                                 fullWidth
@@ -45,10 +73,29 @@ const FormBuilder = () => {
                                 Add Field
                             </CustomButton>
                         </Grid>
+                        <Grid item xs={12}>
+                            <Box display='flex' justifyContent='flex-end'>
+                                <CustomButton
+                                    backgroundColor='#F1F5F9'
+                                    sx={{ color: '#94A3B8' }}
+                                    onClick={handleSave}
+                                >
+                                    Cancel
+                                </CustomButton>
+                                <CustomButton
+                                    type='submit'
+                                    backgroundColor='#0E6ACE'
+                                    sx={{ color: 'white' ,ml:2}}
+                                    onClick={handleSave}
+                                >
+                                    Save
+                                </CustomButton>
+                            </Box>
+                        </Grid>
                     </Grid>
                 </Box>
                 <CustomModal open={open} onClose={handleClose} width='50%' maxHeight="100%">
-                    <FormModal />
+                    <FormModal formId={id} position={form?.form_fields?.length + 1} CreateFields={handleCreateField} />
                 </CustomModal>
             </PageContainer>
         </>

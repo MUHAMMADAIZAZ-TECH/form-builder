@@ -4,8 +4,7 @@ const AppRoutes = [
     { index: true, element: <Page.FormList />, },
     { path: 'eCRF', element: <Page.FormList /> },
     { path: 'add', element: <Page.AddForm /> },
-    { path: 'form-builder', element: <Page.FormBuilder /> },
-
+    { path: 'form-builder/:id', element: <Page.FormBuilder /> },
 ]
 
 export { AppRoutes }
