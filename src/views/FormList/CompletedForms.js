@@ -46,7 +46,7 @@ const FormList = () => {
         <Box sx={{ marginTop: 2 }}>
           <Table
             showCheckBox={false}
-            data={filteredForms || []}
+            data={Forms || []}
             tableHeader={columns || []}
             onView={handleView}
             ViewTooltip='View Response'
