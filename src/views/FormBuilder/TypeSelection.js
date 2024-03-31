@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, FormControl, FormControlLabel, FormGroup, RadioGroup } from '@mui/material'
 import { CustomCheckbox, CustomDatePicker, CustomRadioButton, InputField, SelectBox } from '../../components'
 
-const TypeSelection = ({ field, handleChange, value, handleCheckboxChange, handleRadioChange }) => {
+const TypeSelection = ({ field,disable, handleChange, value, handleCheckboxChange, handleRadioChange }) => {
     return (
         <Box mt={2}>
             {field?.type === 'text' &&
@@ -10,6 +10,7 @@ const TypeSelection = ({ field, handleChange, value, handleCheckboxChange, handl
                     name={field.label}
                     value={value}
                     onChange={handleChange}
+                    disabled={disable}
                 />)}
             {field?.type === 'select' &&
                 (<SelectBox
@@ -17,11 +18,13 @@ const TypeSelection = ({ field, handleChange, value, handleCheckboxChange, handl
                     value={value}
                     onChange={handleChange}
                     options={field.options || []}
+                    disabled={disable}
                 />)}
             {field?.type === 'date' &&
                 (<CustomDatePicker
                     onChange={handleChange}
                     value={value}
+                    disabled={disable}
                 />)}
             {field?.type === 'checkbox' && (
                 <FormGroup>
@@ -32,6 +35,7 @@ const TypeSelection = ({ field, handleChange, value, handleCheckboxChange, handl
                                 <CustomCheckbox
                                     checked={value === label}
                                     onChange={(e) => handleCheckboxChange(label, e.target.checked)}
+                                    disabled={disable}
                                 />
                             }
                             label={label}
@@ -53,6 +57,7 @@ const TypeSelection = ({ field, handleChange, value, handleCheckboxChange, handl
                                 value={label}
                                 control={<CustomRadioButton />}
                                 label={label}
+                                disabled={disable}
                             />
                         ))}
                     </RadioGroup>

@@ -4,8 +4,8 @@ import { PinIcon, BoxIcon, Delete, Edit } from '../../assets/icons/svgicons'
 import TypeSelection from './TypeSelection'
 import { FieldDeleteByID } from '../Apis'
 
-const FormFieldItem = ({ field, index, handleOpen }) => {
-    const [value, setValue] = useState('')
+const FormFieldItem = ({ field, disable, handleOpen, Response,value,setValue }) => {
+    console.log(Response,value);
     const handleChange = (e) => {
         setValue(e.target.value);
     }
@@ -29,7 +29,7 @@ const FormFieldItem = ({ field, index, handleOpen }) => {
     };
     return (
         <Box pt={2} pb={2} pl={3} pr={3} sx={{ backgroundColor: '#E2E8F0', borderRadius: 2 }}>
-            <Box display='flex' mb={2}>
+            {Response ===false && <Box display='flex' mb={2}>
                 <Tooltip title="Pin">
                     <IconButton
                         size="small"
@@ -79,7 +79,7 @@ const FormFieldItem = ({ field, index, handleOpen }) => {
                         var: {field?.label}
                     </Typography>
                 </Box>
-            </Box>
+            </Box>}
             <Box>
                 <Typography color='#2A4376' fontWeight={600} fontSize={16} lineHeight='19.6px'>
                     {field?.position} . {field?.label}
@@ -91,6 +91,7 @@ const FormFieldItem = ({ field, index, handleOpen }) => {
                 field={field}
                 handleCheckboxChange={handleCheckboxChange}
                 handleRadioChange={handleRadioChange}
+                disable={disable}
             />
         </Box>
     )
