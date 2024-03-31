@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper } from '@mui/material';
-import { CustomButton, InputField, PageContainer, PageHeader, SelectBox } from '../components';
-import codeStore from '../store/Store';
+import { CustomButton, InputField, PageContainer, PageHeader, SelectBox } from '../../components';
+import codeStore from '../../store/Store';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useOutletContext } from 'react-router-dom';

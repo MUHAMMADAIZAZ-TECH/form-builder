@@ -1,20 +1,25 @@
 import React from "react";
 import { Box, Container } from "@mui/material";
-import { CustomDrawerHeader ,drawerWidth} from "../Sider/SideStyle";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import CustomSnackbar from "../../Snackbar/CustomSnackbar";
 import { useSnackbar } from "../../../hooks";
+import CustomBreadcrumbs from "../Header/Breadcrumbs";
 
 const MainContainer = () => {
   const { snackbar, handleSnackbarOpen, handleSnackbarClose } = useSnackbar();
+  const location = useLocation();
+  const pathnames = location.pathname.split("/").filter((x) => x);
+
   return (
     <Container
       component="main"
       maxWidth='auto'
-      sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+      sx={{ flexGrow: 1, p: 3, width: '100%', ml: '250px' }}
     >
-      <CustomDrawerHeader />
-      <Box sx={{ paddingX: 1, paddingY: 1 }}>
+      <Box sx={{ paddingX: 1, paddingY: 1, mt: '56px' }}>
+        <Box mt={2} mb={2}>
+          <CustomBreadcrumbs pathnames={pathnames || []} />
+        </Box>
         <Outlet context={[handleSnackbarOpen]} />
       </Box>
 

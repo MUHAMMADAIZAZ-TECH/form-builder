@@ -1,9 +1,11 @@
-import * as Page from '../pages/index';
+import * as Page from '../views/index';
 
 const AppRoutes = [
-    { index: true, element: <Page.CodeList />, },
-    { path: 'list', element: <Page.CodeList /> },
+    { index: true, element: <Page.FormList />, },
+    { path: 'eCRF', element: <Page.FormList /> },
     { path: 'add', element: <Page.AddForm /> },
+    { path: 'form-builder', element: <Page.FormBuilder /> },
+
 ]
 
 export { AppRoutes }

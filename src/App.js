@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { AppRoutes } from "./routes/routes";
-import { Layout } from "./pages";
+import { Layout } from "./views";
 
 const App = () => {
   return (
