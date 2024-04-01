@@ -31,7 +31,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                 <Grid item xs={12}>
                     <Typography>{label}</Typography>
                 </Grid>
-                <Grid item xs={1.5}> <CustomButton
+                <Grid item lg={1.5} xl={1.5} md={1.5} sm={12}> <CustomButton
                     backgroundColor={Tab === null ? '#0E6ACE' : '#F1F5F9'}
                     sx={{ color: Tab === null ? 'white' : '#94A3B8' }}
                     onClick={() => handleTab(null)}
@@ -39,7 +39,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                     General
                 </CustomButton>
                 </Grid>
-                <Grid item xs={1.5}>
+                <Grid item lg={1.5} xl={1.5} md={1.5} sm={12}>
                     <CustomButton
                         backgroundColor={Tab === 1 ? '#0E6ACE' : '#F1F5F9'}
                         sx={{ color: Tab === 1 ? 'white' : '#94A3B8' }}
@@ -48,7 +48,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                         Advance
                     </CustomButton>
                 </Grid>
-                <Grid item xs={1.5}>
+                <Grid item lg={1.5} xl={1.5} md={1.5} sm={12}>
                     <CustomButton
                         backgroundColor={Tab === 2 ? '#0E6ACE' : '#F1F5F9'}
                         sx={{ color: Tab === 2 ? 'white' : '#94A3B8' }}
@@ -58,7 +58,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                     </CustomButton>
                 </Grid>
 
-                <Grid item xs={9} />
+                <Grid item xs={7.5} />
                 {Tab === null && (
                     <>
                         <Grid item xs={12}>
@@ -90,7 +90,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                                 helperText={touched.label && errors.label}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={12} xl={6} lg={6} md={6}>
                             <InputField
                                 fullWidth
                                 label="Variable Name"
@@ -103,7 +103,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                                 helperText={touched.variableName && errors.variableName}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item  xs={12} sm={12} xl={6} lg={6} md={6}>
                             <Box display='flex' margin={2}>
                                 <Box>
                                     <CustomSwitch
@@ -123,7 +123,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item  xs={12} sm={12} xl={6} lg={6} md={6}>
                             <InputField
                                 fullWidth
                                 label="Tool Tip"
@@ -136,7 +136,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                                 helperText={touched.toolTip && errors.toolTip}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item  xs={12} sm={12} xl={6} lg={6} md={6}>
                             <InputField
                                 fullWidth
                                 label="Helper Text"
@@ -149,7 +149,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                                 helperText={touched.helperText && errors.helperText}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item  xs={12} sm={12} xl={6} lg={6} md={6}>
                             <InputField
                                 fullWidth
                                 label="Placeholder Text"
@@ -162,7 +162,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                                 helperText={touched.placeholderText && errors.placeholderText}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item  xs={12} sm={12} xl={6} lg={6} md={6}>
                             <SelectBox
                                 options={['left', 'right', 'center']}
                                 fullWidth
@@ -180,7 +180,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                 )}
                 {Tab === 1 && (
                     <>
-                        <Grid item xs={6}>
+                        <Grid item  xs={12} sm={12} xl={6} lg={6} md={6}>
                             <InputField
                                 fullWidth
                                 label="Add Options"
@@ -215,7 +215,7 @@ const FormModal = ({ formId, position, CreateFields, formik, label }) => {
                 )}
                 {Tab === 2 && (
                     <>
-                        <Grid item xs={6}>
+                        <Grid item  xs={12} sm={12} xl={6} lg={6} md={6}>
                             <SelectBox
                                 options={['DD/MM/YYYY', 'YYYY/MM/DD']}
                                 fullWidth

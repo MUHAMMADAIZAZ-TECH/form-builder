@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, InputAdornment } from "@mui/material";
+import { Box, Grid, InputAdornment ,useMediaQuery} from "@mui/material";
 import { CustomButton, CustomModal, InputField, PageContainer, PageHeader, Table } from "../../components/index";
 import { Search } from "@mui/icons-material";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { CreateForm, CreateResponse, FormDeleteByID, FormsGetAll, } from "../Apis";
 
 const FormList = () => {
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate()
   const [handleSnackbarOpen] = useOutletContext();
   const [open, setOpen] = useState(false);
@@ -58,7 +59,7 @@ const FormList = () => {
   useEffect(() => {
     FormsGetAll(setForms, handleSnackbarOpen)
   }, [])
-  
+
   // Filtered forms based on the search input value
   const filteredForms = Array.isArray(Forms) ? Forms.filter(form =>
     form.title.toLowerCase().includes(searchValue.toLowerCase())
@@ -69,27 +70,34 @@ const FormList = () => {
       <PageHeader label='eCRF' />
       <PageContainer maxWidth="xl">
         <Box width='100%' display='flex' justifyContent='space-between'>
-          <InputField
-            placeholder="Search"
-            size="small"
-            variant="outlined"
-            sx={{ '& input': { padding: '6px 10px', lineHeight: 1 } }}
-            InputLabelProps={{ sx: { lineHeight: '1' } }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            // Update search value on change
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          <Box>
-            <CustomButton backgroundColor="#0E6ACE" sx={{ color: 'white',mr: 1 }} onClick={handleResponses}> Responses</CustomButton>
-            <CustomButton backgroundColor="#0E6ACE" sx={{ color: 'white',  }} onClick={handleOpen}> New Form</CustomButton>
-          </Box>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={6} xl={4} lg={4}>
+              <InputField
+                placeholder="Search"
+                size="small"
+                variant="outlined"
+                sx={{ '& input': { padding: '6px 10px', lineHeight: 1 }, width: '100%' }}
+                InputLabelProps={{ sx: { lineHeight: '1' } }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Search />
+                    </InputAdornment>
+                  ),
+                }}
+                // Update search value on change
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} xl={8} lg={8}>
+              <Box display='flex' justifyContent='flex-end' >
+                <CustomButton backgroundColor="#0E6ACE" sx={{ color: 'white', mr: 1 }} onClick={handleResponses}> Responses</CustomButton>
+                <CustomButton backgroundColor="#0E6ACE" sx={{ color: 'white', }} onClick={handleOpen}> New Form</CustomButton>
+              </Box>
+            </Grid>
+          </Grid>
 
         </Box>
         <Box sx={{ marginTop: 2 }}>
@@ -105,7 +113,7 @@ const FormList = () => {
             onView={handleView}
           />
         </Box>
-        <CustomModal open={open} onClose={handleClose} width='50%' maxHeight="100%">
+        <CustomModal open={open} onClose={handleClose} width={isSmallScreen ? '90%' : '50%'} maxHeight="100%">
           <NewFormModal validationSchema={validationSchema} handleSubmit={handleSubmit} onClose={handleClose} />
         </CustomModal>
       </PageContainer>

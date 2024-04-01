@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CustomButton, CustomModal, PageContainer, PageHeader } from '../../components'
-import { Box, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { Edit, PinIcon, BoxIcon, Delete } from '../../assets/icons/svgicons';
 import FormFieldItem from './FormFieldItem';
 import FormModal from './FormModal';
@@ -23,6 +23,7 @@ const initialValues = {
     chooseDateFormat: '',
 };
 const FormBuilder = ({ Response }) => {
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
     const { id, responseID } = useParams()
     const navigate = useNavigate()
     const [handleSnackbarOpen] = useOutletContext();
@@ -144,7 +145,7 @@ const FormBuilder = ({ Response }) => {
                         boxShadow: 1,
                         borderRadius: 2,
                         p: 2,
-                        minWidth: 300,
+                        width:'100%'
                     }}
                 >
                     {Response === false && <Box>
@@ -210,7 +211,7 @@ const FormBuilder = ({ Response }) => {
                                     />
                                 </Grid>
                             ))}
-                        {IsCompleted && (
+                        {IsCompleted ===true && (
                             <Grid item xs={12}>
                                 <Typography fontWeight={600} color='#2A4376' textAlign='center'>
                                     Successfully Submited Your Response! <Link to='/'>Go Back</Link></Typography>
@@ -272,7 +273,7 @@ const FormBuilder = ({ Response }) => {
                         )}
                     </Grid>
                 </Box>
-                <CustomModal open={open} onClose={handleClose} width='50%' maxHeight="100%">
+                <CustomModal open={open} onClose={handleClose} width={isSmallScreen ? '90%' : '50%'} maxHeight="100%">
                     <FormModal
                         formId={id}
                         position={form?.form_fields?.length + 1}

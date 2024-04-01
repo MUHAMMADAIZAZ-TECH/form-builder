@@ -14,7 +14,7 @@ const MainContainer = () => {
     <Container
       component="main"
       maxWidth='auto'
-      sx={{ flexGrow: 1, p: 3, width: '100%', ml: '250px' }}
+      sx={{ flexGrow: 1, p: 3, width: '100%', ml: { xl: '250px', lg: '250px', md: 0, sm: 0, xs: 0 } }}
     >
       <Box sx={{ paddingX: 1, paddingY: 1, mt: '56px' }}>
         <Box mt={2} mb={2}>
