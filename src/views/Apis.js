@@ -13,18 +13,7 @@ export const CreateForm = async (body, handleSnackbarOpen, navigate) => {
         console.error(error.response);
     }
 }
-export const FormGetByID = async (id, setForm, handleSnackbarOpen) => {
-    try {
-        const response = await DataService.get(`/forms/${id}`);
-        if (response.status === 200) {
-            setForm(response.data)
-            return response.data;
-        }
-    } catch (error) {
-        handleSnackbarOpen("error", error.response.data);
-        console.error(error.response);
-    }
-}
+
 export const FormDeleteByID = async (id, handleSnackbarOpen) => {
     try {
         const response = await DataService.delete(`/forms/${id}`);
@@ -47,7 +36,7 @@ export const CreateFields = async (body, handleSnackbarOpen, ReloadOnAdd) => {
             return;
         }
     } catch (error) {
-        handleSnackbarOpen("error", error.response.data);
+        handleSnackbarOpen("error", error.response.data[body.label]);
         console.error(error.response);
     }
 }
@@ -143,15 +132,39 @@ export const FormsGetAllResponses = async (setForms, handleSnackbarOpen) => {
         console.error(error.response);
     }
 }
-export const FormsGetResponseByID = async (id,setForms, handleSnackbarOpen) => {
+export const FormGetByID = async (id, setForm, handleSnackbarOpen) => {
     try {
-        const response = await DataService.get(`/form-responses/${id}`);
+        const response = await DataService.get(`/forms/${id}`);
         if (response.status === 200) {
-            setForms(response.data)
+            setForm(response.data)
             return response.data;
         }
     } catch (error) {
         handleSnackbarOpen("error", error.response.data);
         console.error(error.response);
     }
+}
+export const FormsGetResponseByID = async (id, formId, setValues, setForms, handleSnackbarOpen) => {
+    try {
+        const [form, response] = await Promise.all([
+            FormGetByID(formId, setForms, handleSnackbarOpen),
+            DataService.get(`/form-responses/${id}`)
+        ]);
+
+        if (response.status === 200) {
+            const result = combineObjects(form.form_fields, response.data.values);
+            setValues(result);
+            return result;
+        }
+    } catch (error) {
+        handleSnackbarOpen("error", error);
+        console.error(error);
+    }
+}
+
+function combineObjects(formFields, values) {
+    return values.map(value => {
+        let formField = formFields.find(field => field.id === value.field);
+        return { ...formField, ...value };
+    });
 }

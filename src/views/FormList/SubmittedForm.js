@@ -49,10 +49,8 @@ const FormBuilder = ({ Response }) => {
     });
 
     useEffect(() => {
-        FormGetByID(formId, setForm, handleSnackbarOpen)
-        FormsGetResponseByID(id, setResponse, handleSnackbarOpen)
+        FormsGetResponseByID(id, formId, setResponse, setForm, handleSnackbarOpen)
     }, [id, formId])
-
     return (
         <>
             <PageHeader label={form?.title} />
@@ -98,18 +96,15 @@ const FormBuilder = ({ Response }) => {
                         </Tooltip>
                     </Box>}
                     <Grid container spacing={2}>
-                        {form?.form_fields
-                            ?.sort((a, b) => a.position - b.position)
+                        {response?.sort((a, b) => a.position - b.position)
                             .map((field, index) => {
-                                const match = response?.values?.find((item) => item.field === field.id);
                                 return (
                                     <Grid item xs={12} key={field.label}>
                                         <FormFieldItem
                                             field={field}
                                             index={index}
-                                            Response={match}
-                                            disable
-                                            value={match ? match.value : ''} // Set value if match is found, otherwise empty string
+                                            Response={field.response}
+                                            value={field.type === 'checkbox' ? field?.value[0] : field?.value} // Set value if match is found, otherwise empty string
                                             setValue={setValue}
                                         />
                                     </Grid>

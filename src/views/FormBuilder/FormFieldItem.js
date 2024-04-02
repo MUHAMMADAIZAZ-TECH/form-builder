@@ -5,7 +5,6 @@ import TypeSelection from './TypeSelection'
 import { FieldDeleteByID } from '../Apis'
 
 const FormFieldItem = ({ field, disable, handleOpen, Response,value,setValue }) => {
-    console.log(Response,value);
     const handleChange = (e) => {
         setValue(e.target.value);
     }

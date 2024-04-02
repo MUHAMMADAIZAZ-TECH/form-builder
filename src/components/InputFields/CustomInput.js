@@ -210,7 +210,7 @@ const CustomDatePicker = ({
       sx={{ width, backgroundColor: 'white', minWidth: '40%' }}
       disabled={disabled}
       label={label}
-      value={value ? DateTime.fromISO(value) : null}
+      value={value ? DateTime.fromISO(value.replace(' ', 'T')) : null} // Convert to ISO format
       onChange={(newValue) =>
         onChange({
           target: {
@@ -231,7 +231,6 @@ const CustomDatePicker = ({
           required,
         },
       }}
-
     />
   );
 };
